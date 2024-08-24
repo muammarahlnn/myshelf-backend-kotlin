@@ -4,8 +4,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 
 @SpringBootApplication
-class MyshelfBackendApplication
+class MyShelfBackendApplication
 
 fun main(args: Array<String>) {
-	runApplication<MyshelfBackendApplication>(*args)
+	runApplication<MyShelfBackendApplication>(*args)
 }

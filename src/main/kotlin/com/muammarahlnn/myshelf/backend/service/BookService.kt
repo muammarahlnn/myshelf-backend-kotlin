@@ -1,0 +1,9 @@
+package com.muammarahlnn.myshelf.backend.service
+
+import com.muammarahlnn.myshelf.backend.model.request.CreateBookRequest
+import com.muammarahlnn.myshelf.backend.model.response.BookResponse
+
+interface BookService {
+
+    fun createBook(request: CreateBookRequest): BookResponse
+}
