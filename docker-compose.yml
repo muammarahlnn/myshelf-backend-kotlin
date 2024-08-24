@@ -1,0 +1,12 @@
+version: '3.5'
+
+services:
+  myshelf-backend-postgres:
+    container_name: myshelf-backend-postgres
+    image: postgres:13.16
+    ports:
+      - "5433:5432"
+    environment:
+      POSTGRES_PASSWORD: ardnn
+      POSTGRES_USER: ardnn
+      POSTGRES_DB: myshelf
