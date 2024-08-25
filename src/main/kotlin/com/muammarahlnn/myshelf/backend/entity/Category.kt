@@ -15,7 +15,7 @@ data class Category(
     val id: Long? = null,
 
     @Column(name = "name", nullable = false)
-    val name: String,
+    var name: String,
 ) {
     @ManyToMany(mappedBy = "categories")
     val books: Set<Book> = mutableSetOf()
