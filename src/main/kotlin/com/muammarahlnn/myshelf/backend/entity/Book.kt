@@ -3,6 +3,8 @@ package com.muammarahlnn.myshelf.backend.entity
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
+import jakarta.persistence.JoinColumn
+import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import org.hibernate.annotations.JdbcTypeCode
 import org.hibernate.type.SqlTypes
@@ -32,4 +34,8 @@ data class Book(
 
     @Column(name = "updated_at", nullable = true)
     var updatedAt: LocalDateTime? = null,
-)
+) {
+    @ManyToOne
+    @JoinColumn(name = "publisher_id", nullable = false)
+    val publisher: Publisher? = null
+}
