@@ -2,15 +2,16 @@ package com.muammarahlnn.myshelf.backend.service.impl
 
 import com.muammarahlnn.myshelf.backend.entity.Book
 import com.muammarahlnn.myshelf.backend.model.request.CreateBookRequest
+import com.muammarahlnn.myshelf.backend.model.request.GetBooksRequest
 import com.muammarahlnn.myshelf.backend.model.response.BookResponse
 import com.muammarahlnn.myshelf.backend.model.response.toResponse
 import com.muammarahlnn.myshelf.backend.repository.BookRepository
 import com.muammarahlnn.myshelf.backend.service.BookService
 import com.muammarahlnn.myshelf.backend.util.ValidationUtil
-import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
-import java.util.Date
 
 @Service
 class BookServiceImpl(
@@ -34,5 +35,17 @@ class BookServiceImpl(
         }
 
         return savedBook.toResponse()
+    }
+
+    override fun getBooks(request: GetBooksRequest): List<BookResponse> {
+        validationUtil.validate(request)
+
+        return bookRepository.findAll(
+            PageRequest.of(
+                request.page,
+                request.size,
+                Sort.by(Sort.Direction.DESC, Book::createdAt.name)
+            ),
+        ).content.map { it.toResponse() }
     }
 }
