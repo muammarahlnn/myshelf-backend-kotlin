@@ -1,6 +1,7 @@
 package com.muammarahlnn.myshelf.backend.service.impl
 
 import com.muammarahlnn.myshelf.backend.entity.Book
+import com.muammarahlnn.myshelf.backend.exception.NotFoundException
 import com.muammarahlnn.myshelf.backend.model.request.CreateBookRequest
 import com.muammarahlnn.myshelf.backend.model.request.GetBooksRequest
 import com.muammarahlnn.myshelf.backend.model.response.BookResponse
@@ -10,6 +11,7 @@ import com.muammarahlnn.myshelf.backend.service.BookService
 import com.muammarahlnn.myshelf.backend.util.ValidationUtil
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
+import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
 import java.time.LocalDateTime
 
@@ -48,4 +50,8 @@ class BookServiceImpl(
             ),
         ).content.map { it.toResponse() }
     }
+
+    override fun getBook(bookId: String): BookResponse =
+        bookRepository.findByIdOrNull(bookId)?.toResponse()
+            ?: throw NotFoundException("Book with id $bookId not found")
 }

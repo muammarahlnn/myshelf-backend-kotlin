@@ -9,4 +9,6 @@ interface BookService {
     fun createBook(request: CreateBookRequest): BookResponse
 
     fun getBooks(request: GetBooksRequest): List<BookResponse>
+
+    fun getBook(bookId: String): BookResponse
 }

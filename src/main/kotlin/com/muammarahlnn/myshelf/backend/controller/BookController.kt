@@ -6,6 +6,7 @@ import com.muammarahlnn.myshelf.backend.model.response.BookResponse
 import com.muammarahlnn.myshelf.backend.model.response.base.WebResponse
 import com.muammarahlnn.myshelf.backend.service.BookService
 import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
@@ -33,4 +34,8 @@ class BookController(
         )
         return WebResponse.success(bookService.getBooks(request))
     }
+
+    @GetMapping("{bookId}")
+    fun getBook(@PathVariable bookId: String): WebResponse<BookResponse> =
+        WebResponse.success(bookService.getBook(bookId))
 }
