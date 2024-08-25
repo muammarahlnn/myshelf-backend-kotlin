@@ -4,6 +4,8 @@ import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
 import jakarta.persistence.JoinColumn
+import jakarta.persistence.JoinTable
+import jakarta.persistence.ManyToMany
 import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import org.hibernate.annotations.JdbcTypeCode
@@ -34,8 +36,16 @@ data class Book(
 
     @Column(name = "updated_at", nullable = true)
     var updatedAt: LocalDateTime? = null,
-) {
+
     @ManyToOne
     @JoinColumn(name = "publisher_id", nullable = false)
-    val publisher: Publisher? = null
+    val publisher: Publisher
+) {
+    @ManyToMany
+    @JoinTable(
+        name = "book_category",
+        joinColumns = [JoinColumn(name = "book_id")],
+        inverseJoinColumns = [JoinColumn(name = "category_id")]
+    )
+    val categories: Set<Category> = mutableSetOf()
 }
