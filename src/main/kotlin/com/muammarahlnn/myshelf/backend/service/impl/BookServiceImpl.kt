@@ -14,9 +14,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
-import java.time.Clock
 import java.time.LocalDateTime
-import java.time.ZonedDateTime
 
 @Service
 class BookServiceImpl(

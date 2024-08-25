@@ -20,7 +20,11 @@ data class Book(
     @Column(name = "title", nullable = false)
     var title: String,
 
-    @Column(name = "description", nullable = true)
+    @Column(
+        name = "description",
+        nullable = true,
+        columnDefinition = "TEXT"
+    )
     var desc: String? = null,
 
     @Column(name = "created_at", nullable = false)
