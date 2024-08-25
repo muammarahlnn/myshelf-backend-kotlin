@@ -59,6 +59,11 @@ class PublisherServiceImpl(
         return publisherRepository.save(publisher).toResponse()
     }
 
+    override fun deletePublisher(publisherId: Long) {
+        val publisher = findPublisherByIdOrThrowNotFound(publisherId)
+        publisherRepository.delete(publisher)
+    }
+
     private fun findPublisherByIdOrThrowNotFound(publisherId: Long): Publisher =
         publisherRepository.findByIdOrNull(publisherId)
             ?: throw NotFoundException("Publisher with id $publisherId not found")

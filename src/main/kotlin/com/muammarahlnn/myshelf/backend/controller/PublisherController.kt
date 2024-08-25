@@ -7,6 +7,7 @@ import com.muammarahlnn.myshelf.backend.dto.request.UpdatePublisherRequest
 import com.muammarahlnn.myshelf.backend.dto.response.PublisherResponse
 import com.muammarahlnn.myshelf.backend.dto.response.base.WebResponse
 import com.muammarahlnn.myshelf.backend.service.PublisherService
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -46,4 +47,10 @@ class PublisherController(
             request = requestBody,
         )
     )
+
+    @DeleteMapping("{publisherId}")
+    fun deletePublisher(@PathVariable publisherId: Long): WebResponse<String> {
+        publisherService.deletePublisher(publisherId)
+        return WebResponse.success("Publisher with id $publisherId successfully deleted")
+    }
 }

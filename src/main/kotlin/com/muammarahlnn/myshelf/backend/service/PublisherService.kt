@@ -18,4 +18,6 @@ interface PublisherService {
     fun getPublisher(publisherId: Long): PublisherResponse
 
     fun updatePublisher(publisherId: Long, request: UpdatePublisherRequest): PublisherResponse
+
+    fun deletePublisher(publisherId: Long)
 }
