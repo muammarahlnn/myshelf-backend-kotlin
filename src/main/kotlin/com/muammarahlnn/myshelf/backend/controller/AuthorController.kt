@@ -7,6 +7,7 @@ import com.muammarahlnn.myshelf.backend.dto.request.UpdateAuthorRequest
 import com.muammarahlnn.myshelf.backend.dto.response.AuthorResponse
 import com.muammarahlnn.myshelf.backend.dto.response.base.WebResponse
 import com.muammarahlnn.myshelf.backend.service.AuthorService
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -46,4 +47,10 @@ class AuthorController(
             request = requestBody,
         )
     )
+
+    @DeleteMapping("{authorId}")
+    fun deleteAuthor(@PathVariable authorId: Long): WebResponse<String> {
+        authorService.deleteAuthor(authorId)
+        return WebResponse.success("Author with id $authorId successfully deleted")
+    }
 }

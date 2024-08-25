@@ -58,6 +58,11 @@ class AuthorServiceImpl(
         return authorRepository.save(author).toResponse()
     }
 
+    override fun deleteAuthor(authorId: Long) {
+        val author = findAuthorByIdOrThrowNotFound(authorId)
+        authorRepository.delete(author)
+    }
+
     private fun findAuthorByIdOrThrowNotFound(authorId: Long): Author =
         authorRepository.findByIdOrNull(authorId)
             ?: throw NotFoundException("Author with id $authorId not found")

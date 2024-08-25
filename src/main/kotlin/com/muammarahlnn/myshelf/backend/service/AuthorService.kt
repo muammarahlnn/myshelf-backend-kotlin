@@ -18,4 +18,6 @@ interface AuthorService {
     fun getAuthor(authorId: Long): AuthorResponse
 
     fun updateAuthor(authorId: Long, request: UpdateAuthorRequest): AuthorResponse
+
+    fun deleteAuthor(authorId: Long)
 }
