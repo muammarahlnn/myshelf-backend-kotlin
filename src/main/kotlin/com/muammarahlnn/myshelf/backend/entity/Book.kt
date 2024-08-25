@@ -43,6 +43,14 @@ data class Book(
 ) {
     @ManyToMany
     @JoinTable(
+        name = "book_author",
+        joinColumns = [JoinColumn(name = "book_id")],
+        inverseJoinColumns = [JoinColumn(name = "author_id")]
+    )
+    val authors: Set<Author> = mutableSetOf()
+
+    @ManyToMany
+    @JoinTable(
         name = "book_category",
         joinColumns = [JoinColumn(name = "book_id")],
         inverseJoinColumns = [JoinColumn(name = "category_id")]
