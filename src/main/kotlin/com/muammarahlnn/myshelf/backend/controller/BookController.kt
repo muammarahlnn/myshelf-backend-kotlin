@@ -7,6 +7,7 @@ import com.muammarahlnn.myshelf.backend.dto.request.UpdateBookRequest
 import com.muammarahlnn.myshelf.backend.dto.response.BookResponse
 import com.muammarahlnn.myshelf.backend.dto.response.base.WebResponse
 import com.muammarahlnn.myshelf.backend.service.BookService
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -43,4 +44,10 @@ class BookController(
             request = requestBody,
         )
     )
+
+    @DeleteMapping("{bookId}")
+    fun deleteBook(@PathVariable bookId: String): WebResponse<String> {
+        bookService.deleteBook(bookId)
+        return WebResponse.success("Book with id $bookId successfully deleted")
+    }
 }

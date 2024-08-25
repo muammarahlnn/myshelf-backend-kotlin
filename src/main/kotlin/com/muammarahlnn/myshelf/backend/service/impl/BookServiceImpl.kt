@@ -1,13 +1,13 @@
 package com.muammarahlnn.myshelf.backend.service.impl
 
-import com.muammarahlnn.myshelf.backend.entity.Book
-import com.muammarahlnn.myshelf.backend.entity.Publisher
-import com.muammarahlnn.myshelf.backend.exception.NotFoundException
 import com.muammarahlnn.myshelf.backend.dto.request.CreateBookRequest
 import com.muammarahlnn.myshelf.backend.dto.request.PagingRequest
 import com.muammarahlnn.myshelf.backend.dto.request.UpdateBookRequest
 import com.muammarahlnn.myshelf.backend.dto.response.BookResponse
 import com.muammarahlnn.myshelf.backend.dto.response.toResponse
+import com.muammarahlnn.myshelf.backend.entity.Book
+import com.muammarahlnn.myshelf.backend.entity.Publisher
+import com.muammarahlnn.myshelf.backend.exception.NotFoundException
 import com.muammarahlnn.myshelf.backend.repository.BookRepository
 import com.muammarahlnn.myshelf.backend.service.BookService
 import com.muammarahlnn.myshelf.backend.util.ValidationUtil
@@ -68,6 +68,11 @@ class BookServiceImpl(
         }
 
         return bookRepository.save(book).toResponse()
+    }
+
+    override fun deleteBook(bookId: String) {
+        val book = findBookByIdOrThrowNotFound(bookId)
+        bookRepository.delete(book)
     }
 
     private fun findBookByIdOrThrowNotFound(bookId: String): Book =
