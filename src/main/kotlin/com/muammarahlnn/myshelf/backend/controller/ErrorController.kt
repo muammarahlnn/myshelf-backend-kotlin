@@ -1,7 +1,8 @@
 package com.muammarahlnn.myshelf.backend.controller
 
 import com.muammarahlnn.myshelf.backend.exception.NotFoundException
-import com.muammarahlnn.myshelf.backend.model.response.base.WebResponse
+import com.muammarahlnn.myshelf.backend.dto.response.base.WebResponse
+import com.muammarahlnn.myshelf.backend.exception.InternalServerException
 import jakarta.validation.ConstraintViolationException
 import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.RestControllerAdvice
@@ -27,5 +28,13 @@ class ErrorController {
             code = 404,
             status = "NOT FOUND",
             data = notFoundException.message.toString(),
+        )
+
+    @ExceptionHandler(value = [InternalServerException::class])
+    fun notFoundHandler(internalServerException: InternalServerException): WebResponse<String> =
+        WebResponse(
+            code = 500,
+            status = "INTERNAL SERVER ERROR",
+            data = internalServerException.message.toString(),
         )
 }

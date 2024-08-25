@@ -1,12 +1,13 @@
 package com.muammarahlnn.myshelf.backend.service.impl
 
 import com.muammarahlnn.myshelf.backend.entity.Book
+import com.muammarahlnn.myshelf.backend.entity.Publisher
 import com.muammarahlnn.myshelf.backend.exception.NotFoundException
-import com.muammarahlnn.myshelf.backend.model.request.CreateBookRequest
-import com.muammarahlnn.myshelf.backend.model.request.GetBooksRequest
-import com.muammarahlnn.myshelf.backend.model.request.UpdateBookRequest
-import com.muammarahlnn.myshelf.backend.model.response.BookResponse
-import com.muammarahlnn.myshelf.backend.model.response.toResponse
+import com.muammarahlnn.myshelf.backend.dto.request.CreateBookRequest
+import com.muammarahlnn.myshelf.backend.dto.request.PagingRequest
+import com.muammarahlnn.myshelf.backend.dto.request.UpdateBookRequest
+import com.muammarahlnn.myshelf.backend.dto.response.BookResponse
+import com.muammarahlnn.myshelf.backend.dto.response.toResponse
 import com.muammarahlnn.myshelf.backend.repository.BookRepository
 import com.muammarahlnn.myshelf.backend.service.BookService
 import com.muammarahlnn.myshelf.backend.util.ValidationUtil
@@ -29,6 +30,7 @@ class BookServiceImpl(
             title = request.title,
             desc = request.desc,
             createdAt = LocalDateTime.now(),
+            publisher = Publisher(name = "test")
         )
 
         val savedBook = try {
@@ -40,7 +42,7 @@ class BookServiceImpl(
         return savedBook.toResponse()
     }
 
-    override fun getBooks(request: GetBooksRequest): List<BookResponse> {
+    override fun getBooks(request: PagingRequest): List<BookResponse> {
         validationUtil.validate(request)
 
         return bookRepository.findAll(

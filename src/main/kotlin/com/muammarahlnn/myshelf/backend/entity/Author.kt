@@ -15,7 +15,7 @@ data class Author(
     val id: Long? = null,
 
     @Column(name = "name", nullable = false)
-    val name: String,
+    var name: String,
 ) {
     @ManyToMany(mappedBy = "authors")
     val books: Set<Book> = mutableSetOf()

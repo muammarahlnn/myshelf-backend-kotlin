@@ -1,4 +1,4 @@
-package com.muammarahlnn.myshelf.backend.model.response.base
+package com.muammarahlnn.myshelf.backend.dto.response.base
 
 data class WebResponse<T>(
     val code: Int,

@@ -1,4 +1,4 @@
-package com.muammarahlnn.myshelf.backend.model.response
+package com.muammarahlnn.myshelf.backend.dto.response
 
 import com.muammarahlnn.myshelf.backend.entity.Book
 

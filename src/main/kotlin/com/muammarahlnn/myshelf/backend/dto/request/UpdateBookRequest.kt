@@ -1,7 +1,6 @@
-package com.muammarahlnn.myshelf.backend.model.request
+package com.muammarahlnn.myshelf.backend.dto.request
 
 import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.NotNull
 
 /**
  * @Author Muammar Ahlan Abimanyu
