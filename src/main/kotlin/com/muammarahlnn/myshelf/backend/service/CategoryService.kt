@@ -18,4 +18,6 @@ interface CategoryService {
     fun getCategory(categoryId: Long): CategoryResponse
 
     fun updateCategory(categoryId: Long, request: UpdateCategoryRequest): CategoryResponse
+
+    fun deleteCategory(categoryId: Long)
 }

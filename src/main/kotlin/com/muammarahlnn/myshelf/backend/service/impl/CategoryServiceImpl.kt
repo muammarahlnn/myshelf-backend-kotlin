@@ -60,6 +60,11 @@ class CategoryServiceImpl(
         return categoryRepository.save(category).toResponse()
     }
 
+    override fun deleteCategory(categoryId: Long) {
+        val category = findCategoryByIdOrThrowNotFound(categoryId)
+        categoryRepository.delete(category)
+    }
+
     private fun findCategoryByIdOrThrowNotFound(categoryId: Long): Category =
         categoryRepository.findByIdOrNull(categoryId)
             ?: throw NotFoundException("Category with id $categoryId not found")

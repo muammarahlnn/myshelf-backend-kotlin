@@ -7,6 +7,7 @@ import com.muammarahlnn.myshelf.backend.dto.request.UpdateCategoryRequest
 import com.muammarahlnn.myshelf.backend.dto.response.CategoryResponse
 import com.muammarahlnn.myshelf.backend.dto.response.base.WebResponse
 import com.muammarahlnn.myshelf.backend.service.CategoryService
+import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
@@ -46,4 +47,10 @@ class CategoryController(
             request = requestBody,
         )
     )
+
+    @DeleteMapping("{categoryId}")
+    fun deleteCategory(@PathVariable categoryId: Long): WebResponse<String> {
+        categoryService.deleteCategory(categoryId)
+        return WebResponse.success("Category with id $categoryId successfully deleted")
+    }
 }
