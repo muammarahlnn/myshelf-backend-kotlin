@@ -2,12 +2,14 @@ package com.muammarahlnn.myshelf.backend.controller
 
 import com.muammarahlnn.myshelf.backend.model.request.CreateBookRequest
 import com.muammarahlnn.myshelf.backend.model.request.GetBooksRequest
+import com.muammarahlnn.myshelf.backend.model.request.UpdateBookRequest
 import com.muammarahlnn.myshelf.backend.model.response.BookResponse
 import com.muammarahlnn.myshelf.backend.model.response.base.WebResponse
 import com.muammarahlnn.myshelf.backend.service.BookService
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RequestParam
@@ -38,4 +40,15 @@ class BookController(
     @GetMapping("{bookId}")
     fun getBook(@PathVariable bookId: String): WebResponse<BookResponse> =
         WebResponse.success(bookService.getBook(bookId))
+
+    @PutMapping("{bookId}")
+    fun updateBook(
+        @PathVariable bookId: String,
+        @RequestBody requestBody: UpdateBookRequest,
+    ): WebResponse<BookResponse> = WebResponse.success(
+        bookService.updateBook(
+            bookId = bookId,
+            request = requestBody,
+        )
+    )
 }

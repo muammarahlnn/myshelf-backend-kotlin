@@ -4,6 +4,7 @@ import com.muammarahlnn.myshelf.backend.entity.Book
 import com.muammarahlnn.myshelf.backend.exception.NotFoundException
 import com.muammarahlnn.myshelf.backend.model.request.CreateBookRequest
 import com.muammarahlnn.myshelf.backend.model.request.GetBooksRequest
+import com.muammarahlnn.myshelf.backend.model.request.UpdateBookRequest
 import com.muammarahlnn.myshelf.backend.model.response.BookResponse
 import com.muammarahlnn.myshelf.backend.model.response.toResponse
 import com.muammarahlnn.myshelf.backend.repository.BookRepository
@@ -13,7 +14,9 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import java.time.Clock
 import java.time.LocalDateTime
+import java.time.ZonedDateTime
 
 @Service
 class BookServiceImpl(
@@ -52,6 +55,21 @@ class BookServiceImpl(
     }
 
     override fun getBook(bookId: String): BookResponse =
-        bookRepository.findByIdOrNull(bookId)?.toResponse()
-            ?: throw NotFoundException("Book with id $bookId not found")
+        findBookByIdOrThrowNotFound(bookId).toResponse()
+
+    override fun updateBook(bookId: String, request: UpdateBookRequest): BookResponse {
+        val book = findBookByIdOrThrowNotFound(bookId)
+        validationUtil.validate(request)
+
+        book.apply {
+            title = request.title
+            request.desc?.let { desc = it }
+            updatedAt = LocalDateTime.now()
+        }
+
+        return bookRepository.save(book).toResponse()
+    }
+
+    private fun findBookByIdOrThrowNotFound(bookId: String): Book =
+        bookRepository.findByIdOrNull(bookId) ?: throw NotFoundException("Book with id $bookId not found")
 }

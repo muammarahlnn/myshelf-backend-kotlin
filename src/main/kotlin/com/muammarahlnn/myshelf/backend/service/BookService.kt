@@ -2,6 +2,7 @@ package com.muammarahlnn.myshelf.backend.service
 
 import com.muammarahlnn.myshelf.backend.model.request.CreateBookRequest
 import com.muammarahlnn.myshelf.backend.model.request.GetBooksRequest
+import com.muammarahlnn.myshelf.backend.model.request.UpdateBookRequest
 import com.muammarahlnn.myshelf.backend.model.response.BookResponse
 
 interface BookService {
@@ -11,4 +12,6 @@ interface BookService {
     fun getBooks(request: GetBooksRequest): List<BookResponse>
 
     fun getBook(bookId: String): BookResponse
+
+    fun updateBook(bookId: String, request: UpdateBookRequest): BookResponse
 }

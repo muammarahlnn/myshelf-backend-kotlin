@@ -27,5 +27,5 @@ data class Book(
     val createdAt: LocalDateTime,
 
     @Column(name = "updated_at", nullable = true)
-    val updatedAt: LocalDateTime? = null,
+    var updatedAt: LocalDateTime? = null,
 )
