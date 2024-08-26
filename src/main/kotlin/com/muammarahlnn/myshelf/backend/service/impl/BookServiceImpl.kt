@@ -7,10 +7,12 @@ import com.muammarahlnn.myshelf.backend.dto.response.BookResponse
 import com.muammarahlnn.myshelf.backend.dto.response.toResponse
 import com.muammarahlnn.myshelf.backend.entity.Author
 import com.muammarahlnn.myshelf.backend.entity.Book
+import com.muammarahlnn.myshelf.backend.entity.Category
 import com.muammarahlnn.myshelf.backend.entity.Publisher
 import com.muammarahlnn.myshelf.backend.exception.NotFoundException
 import com.muammarahlnn.myshelf.backend.repository.AuthorRepository
 import com.muammarahlnn.myshelf.backend.repository.BookRepository
+import com.muammarahlnn.myshelf.backend.repository.CategoryRepository
 import com.muammarahlnn.myshelf.backend.repository.PublisherRepository
 import com.muammarahlnn.myshelf.backend.service.BookService
 import com.muammarahlnn.myshelf.backend.util.ValidationUtil
@@ -25,6 +27,7 @@ class BookServiceImpl(
     private val bookRepository: BookRepository,
     private val publisherRepository: PublisherRepository,
     private val authorRepository: AuthorRepository,
+    private val categoryRepository: CategoryRepository,
     private val validationUtil: ValidationUtil,
 ) : BookService {
 
@@ -36,8 +39,9 @@ class BookServiceImpl(
             desc = request.desc,
             createdAt = LocalDateTime.now(),
         ).apply {
-            addPublisher(request.publisherId)
             addAuthors(request.authorIds)
+            addCategories(request.categoryIds)
+            addPublisher(request.publisherId)
         }
 
         return bookRepository.save(book).toResponse()
@@ -65,8 +69,9 @@ class BookServiceImpl(
         book.apply {
             title = request.title
             request.desc?.let { desc = it }
-            addPublisher(request.publisherId)
             addAuthors(request.authorIds)
+            addCategories(request.categoryIds)
+            addPublisher(request.publisherId)
             updatedAt = LocalDateTime.now()
         }
 
@@ -89,15 +94,23 @@ class BookServiceImpl(
         }
     }
 
-    private fun Book.addAuthors(authorIds: Set<Long>?): Book = apply {
-        authorIds?.let { authorIds ->
-            val authors = mutableSetOf<Author>()
-            authorIds.forEach { authorId ->
-                val author = authorRepository.findByIdOrNull(authorId)
-                    ?: throw NotFoundException("Author with id $authorId not found")
-                authors.add(author)
-            }
-            this.authors = authors
+    private fun Book.addAuthors(authorIds: List<Long>): Book = apply {
+        val authors = mutableSetOf<Author>()
+        authorIds.forEach { authorId ->
+            val author = authorRepository.findByIdOrNull(authorId)
+                ?: throw NotFoundException("Author with id $authorId not found")
+            authors.add(author)
         }
+        this.authors = authors
+    }
+
+    private fun Book.addCategories(categoryIds: List<Long>): Book = apply {
+        val categories = mutableSetOf<Category>()
+        categoryIds.forEach { categoryId ->
+            val category = categoryRepository.findByIdOrNull(categoryId)
+                ?: throw NotFoundException("Category with id $categoryId not found")
+            categories.add(category)
+        }
+        this.categories = categories
     }
 }

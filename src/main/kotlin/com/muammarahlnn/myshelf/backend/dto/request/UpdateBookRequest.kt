@@ -10,7 +10,8 @@ import jakarta.validation.constraints.NotEmpty
  */
 data class UpdateBookRequest(
     @field:NotBlank val title: String,
-    @field:NotBlank val desc: String?,
-    @field:Min(1) val publisherId: Long?,
-    @field:NotEmpty val authorIds: Set<Long>?,
+    val desc: String? = null,
+    val authorIds: List<Long> = emptyList(),
+    val categoryIds: List<Long> = emptyList(),
+    @field:Min(1) val publisherId: Long? = null,
 )
