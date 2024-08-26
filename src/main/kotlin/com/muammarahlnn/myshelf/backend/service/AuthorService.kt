@@ -4,6 +4,7 @@ import com.muammarahlnn.myshelf.backend.dto.request.CreateAuthorRequest
 import com.muammarahlnn.myshelf.backend.dto.request.PagingRequest
 import com.muammarahlnn.myshelf.backend.dto.request.UpdateAuthorRequest
 import com.muammarahlnn.myshelf.backend.dto.response.AuthorResponse
+import com.muammarahlnn.myshelf.backend.dto.response.BookResponse
 
 /**
  * @Author Muammar Ahlan Abimanyu
@@ -20,4 +21,6 @@ interface AuthorService {
     fun updateAuthor(authorId: Long, request: UpdateAuthorRequest): AuthorResponse
 
     fun deleteAuthor(authorId: Long)
+
+    fun getAuthorBooks(authorId: Long): List<BookResponse>
 }
