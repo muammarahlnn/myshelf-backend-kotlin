@@ -3,6 +3,7 @@ package com.muammarahlnn.myshelf.backend.service
 import com.muammarahlnn.myshelf.backend.dto.request.CreateCategoryRequest
 import com.muammarahlnn.myshelf.backend.dto.request.PagingRequest
 import com.muammarahlnn.myshelf.backend.dto.request.UpdateCategoryRequest
+import com.muammarahlnn.myshelf.backend.dto.response.BookResponse
 import com.muammarahlnn.myshelf.backend.dto.response.CategoryResponse
 
 /**
@@ -20,4 +21,6 @@ interface CategoryService {
     fun updateCategory(categoryId: Long, request: UpdateCategoryRequest): CategoryResponse
 
     fun deleteCategory(categoryId: Long)
+
+    fun getCategoryBooks(categoryId: Long): List<BookResponse>
 }

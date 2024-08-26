@@ -4,6 +4,7 @@ import com.muammarahlnn.myshelf.backend.controller.provider.PagingProvider
 import com.muammarahlnn.myshelf.backend.dto.request.CreateCategoryRequest
 import com.muammarahlnn.myshelf.backend.dto.request.PagingRequest
 import com.muammarahlnn.myshelf.backend.dto.request.UpdateCategoryRequest
+import com.muammarahlnn.myshelf.backend.dto.response.BookResponse
 import com.muammarahlnn.myshelf.backend.dto.response.CategoryResponse
 import com.muammarahlnn.myshelf.backend.dto.response.base.WebResponse
 import com.muammarahlnn.myshelf.backend.service.CategoryService
@@ -53,4 +54,8 @@ class CategoryController(
         categoryService.deleteCategory(categoryId)
         return WebResponse.success("Category with id $categoryId successfully deleted")
     }
+
+    @GetMapping("{categoryId}/books")
+    fun getCategoryBooks(@PathVariable categoryId: Long): WebResponse<List<BookResponse>> =
+        WebResponse.success(categoryService.getCategoryBooks(categoryId))
 }

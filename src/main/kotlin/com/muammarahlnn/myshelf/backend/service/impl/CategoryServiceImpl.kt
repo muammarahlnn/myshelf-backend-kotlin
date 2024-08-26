@@ -3,6 +3,7 @@ package com.muammarahlnn.myshelf.backend.service.impl
 import com.muammarahlnn.myshelf.backend.dto.request.CreateCategoryRequest
 import com.muammarahlnn.myshelf.backend.dto.request.PagingRequest
 import com.muammarahlnn.myshelf.backend.dto.request.UpdateCategoryRequest
+import com.muammarahlnn.myshelf.backend.dto.response.BookResponse
 import com.muammarahlnn.myshelf.backend.dto.response.CategoryResponse
 import com.muammarahlnn.myshelf.backend.dto.response.toResponse
 import com.muammarahlnn.myshelf.backend.entity.Category
@@ -62,6 +63,11 @@ class CategoryServiceImpl(
     override fun deleteCategory(categoryId: Long) {
         val category = findCategoryByIdOrThrowNotFound(categoryId)
         categoryRepository.delete(category)
+    }
+
+    override fun getCategoryBooks(categoryId: Long): List<BookResponse> {
+        val category = findCategoryByIdOrThrowNotFound(categoryId)
+        return category.books.map { it.toResponse() }
     }
 
     private fun findCategoryByIdOrThrowNotFound(categoryId: Long): Category =
