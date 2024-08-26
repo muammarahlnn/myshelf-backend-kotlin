@@ -5,7 +5,6 @@ import com.muammarahlnn.myshelf.backend.dto.request.PagingRequest
 import com.muammarahlnn.myshelf.backend.dto.request.UpdateCategoryRequest
 import com.muammarahlnn.myshelf.backend.dto.response.CategoryResponse
 import com.muammarahlnn.myshelf.backend.dto.response.toResponse
-import com.muammarahlnn.myshelf.backend.entity.Author
 import com.muammarahlnn.myshelf.backend.entity.Category
 import com.muammarahlnn.myshelf.backend.exception.NotFoundException
 import com.muammarahlnn.myshelf.backend.repository.CategoryRepository
@@ -40,7 +39,7 @@ class CategoryServiceImpl(
             PageRequest.of(
                 request.page,
                 request.size,
-                Sort.by(Sort.Direction.ASC, Author::name.name)
+                Sort.by(Sort.Direction.ASC, Category::name.name)
             ),
         ).content.map { it.toResponse() }
     }

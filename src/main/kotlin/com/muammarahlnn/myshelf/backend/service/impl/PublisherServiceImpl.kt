@@ -5,7 +5,6 @@ import com.muammarahlnn.myshelf.backend.dto.request.PagingRequest
 import com.muammarahlnn.myshelf.backend.dto.request.UpdatePublisherRequest
 import com.muammarahlnn.myshelf.backend.dto.response.PublisherResponse
 import com.muammarahlnn.myshelf.backend.dto.response.toResponse
-import com.muammarahlnn.myshelf.backend.entity.Author
 import com.muammarahlnn.myshelf.backend.entity.Publisher
 import com.muammarahlnn.myshelf.backend.exception.NotFoundException
 import com.muammarahlnn.myshelf.backend.repository.PublisherRepository
@@ -40,7 +39,7 @@ class PublisherServiceImpl(
             PageRequest.of(
                 request.page,
                 request.size,
-                Sort.by(Sort.Direction.ASC, Author::name.name)
+                Sort.by(Sort.Direction.ASC, Publisher::name.name)
             ),
         ).content.map { it.toResponse() }
     }

@@ -9,6 +9,7 @@ import com.muammarahlnn.myshelf.backend.entity.Book
 import com.muammarahlnn.myshelf.backend.entity.Publisher
 import com.muammarahlnn.myshelf.backend.exception.NotFoundException
 import com.muammarahlnn.myshelf.backend.repository.BookRepository
+import com.muammarahlnn.myshelf.backend.repository.PublisherRepository
 import com.muammarahlnn.myshelf.backend.service.BookService
 import com.muammarahlnn.myshelf.backend.util.ValidationUtil
 import org.springframework.data.domain.PageRequest
@@ -20,26 +21,29 @@ import java.time.LocalDateTime
 @Service
 class BookServiceImpl(
     private val bookRepository: BookRepository,
+    private val publisherRepository: PublisherRepository,
     private val validationUtil: ValidationUtil,
 ) : BookService {
 
     override fun createBook(request: CreateBookRequest): BookResponse {
         validationUtil.validate(request)
 
-        val bookEntity = Book(
+        val book = Book(
             title = request.title,
             desc = request.desc,
             createdAt = LocalDateTime.now(),
-            publisher = Publisher(name = "test")
         )
 
-        val savedBook = try {
-            bookRepository.save(bookEntity)
-        } catch (e: Exception) {
-            throw IllegalStateException("Failed to save book", e)
+        request.publisherId?.let { publisherId ->
+            val publisher = publisherRepository.findByIdOrNull(publisherId)
+                ?: throw NotFoundException("Publisher with id $publisherId not found")
+
+            book.apply {
+                this.publisher = publisher
+            }
         }
 
-        return savedBook.toResponse()
+        return bookRepository.save(book).toResponse()
     }
 
     override fun getBooks(request: PagingRequest): List<BookResponse> {
@@ -64,6 +68,11 @@ class BookServiceImpl(
         book.apply {
             title = request.title
             request.desc?.let { desc = it }
+            request.publisherId?.let { publisherId ->
+                publisherRepository.findByIdOrNull(publisherId)?.let { publisher ->
+                    this.publisher = publisher
+                }
+            }
             updatedAt = LocalDateTime.now()
         }
 

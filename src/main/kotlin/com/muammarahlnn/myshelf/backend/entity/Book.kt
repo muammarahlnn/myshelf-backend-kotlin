@@ -38,8 +38,8 @@ data class Book(
     var updatedAt: LocalDateTime? = null,
 
     @ManyToOne
-    @JoinColumn(name = "publisher_id", nullable = false)
-    val publisher: Publisher
+    @JoinColumn(name = "publisher_id", nullable = true)
+    var publisher: Publisher? = null,
 ) {
     @ManyToMany
     @JoinTable(
