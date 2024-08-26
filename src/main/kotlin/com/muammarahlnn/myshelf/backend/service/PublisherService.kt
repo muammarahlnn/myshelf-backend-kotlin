@@ -3,6 +3,7 @@ package com.muammarahlnn.myshelf.backend.service
 import com.muammarahlnn.myshelf.backend.dto.request.CreatePublisherRequest
 import com.muammarahlnn.myshelf.backend.dto.request.PagingRequest
 import com.muammarahlnn.myshelf.backend.dto.request.UpdatePublisherRequest
+import com.muammarahlnn.myshelf.backend.dto.response.BookResponse
 import com.muammarahlnn.myshelf.backend.dto.response.PublisherResponse
 
 /**
@@ -20,4 +21,6 @@ interface PublisherService {
     fun updatePublisher(publisherId: Long, request: UpdatePublisherRequest): PublisherResponse
 
     fun deletePublisher(publisherId: Long)
+
+    fun getPublisherBooks(publisherId: Long): List<BookResponse>
 }

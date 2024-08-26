@@ -4,6 +4,7 @@ import com.muammarahlnn.myshelf.backend.controller.provider.PagingProvider
 import com.muammarahlnn.myshelf.backend.dto.request.CreatePublisherRequest
 import com.muammarahlnn.myshelf.backend.dto.request.PagingRequest
 import com.muammarahlnn.myshelf.backend.dto.request.UpdatePublisherRequest
+import com.muammarahlnn.myshelf.backend.dto.response.BookResponse
 import com.muammarahlnn.myshelf.backend.dto.response.PublisherResponse
 import com.muammarahlnn.myshelf.backend.dto.response.base.WebResponse
 import com.muammarahlnn.myshelf.backend.service.PublisherService
@@ -53,4 +54,8 @@ class PublisherController(
         publisherService.deletePublisher(publisherId)
         return WebResponse.success("Publisher with id $publisherId successfully deleted")
     }
+
+    @GetMapping("{publisherId}/books")
+    fun getPublisherBooks(@PathVariable publisherId: Long): WebResponse<List<BookResponse>> =
+        WebResponse.success(publisherService.getPublisherBooks(publisherId))
 }

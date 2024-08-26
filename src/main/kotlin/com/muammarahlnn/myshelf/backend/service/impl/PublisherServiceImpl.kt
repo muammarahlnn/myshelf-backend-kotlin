@@ -3,6 +3,7 @@ package com.muammarahlnn.myshelf.backend.service.impl
 import com.muammarahlnn.myshelf.backend.dto.request.CreatePublisherRequest
 import com.muammarahlnn.myshelf.backend.dto.request.PagingRequest
 import com.muammarahlnn.myshelf.backend.dto.request.UpdatePublisherRequest
+import com.muammarahlnn.myshelf.backend.dto.response.BookResponse
 import com.muammarahlnn.myshelf.backend.dto.response.PublisherResponse
 import com.muammarahlnn.myshelf.backend.dto.response.toResponse
 import com.muammarahlnn.myshelf.backend.entity.Publisher
@@ -61,6 +62,11 @@ class PublisherServiceImpl(
     override fun deletePublisher(publisherId: Long) {
         val publisher = findPublisherByIdOrThrowNotFound(publisherId)
         publisherRepository.delete(publisher)
+    }
+
+    override fun getPublisherBooks(publisherId: Long): List<BookResponse> {
+        val publisher = findPublisherByIdOrThrowNotFound(publisherId)
+        return publisher.books.map { it.toResponse() }
     }
 
     private fun findPublisherByIdOrThrowNotFound(publisherId: Long): Publisher =
