@@ -47,7 +47,7 @@ data class Book(
         joinColumns = [JoinColumn(name = "book_id")],
         inverseJoinColumns = [JoinColumn(name = "author_id")]
     )
-    val authors: Set<Author> = mutableSetOf()
+    var authors: Set<Author> = mutableSetOf()
 
     @ManyToMany
     @JoinTable(

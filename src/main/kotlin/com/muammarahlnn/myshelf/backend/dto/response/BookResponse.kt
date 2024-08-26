@@ -7,11 +7,13 @@ data class BookResponse(
     val title: String,
     val desc: String? = null,
     val publisher: PublisherResponse? = null,
+    val authors: List<AuthorResponse>? = null,
 )
 
 fun Book.toResponse(): BookResponse = BookResponse(
     id = id,
     title = title,
     desc = desc,
-    publisher = publisher?.toResponse()
+    publisher = publisher?.toResponse(),
+    authors = authors.sortedBy { it.id }.map { it.toResponse() }
 )

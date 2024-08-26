@@ -5,9 +5,11 @@ import com.muammarahlnn.myshelf.backend.dto.request.PagingRequest
 import com.muammarahlnn.myshelf.backend.dto.request.UpdateBookRequest
 import com.muammarahlnn.myshelf.backend.dto.response.BookResponse
 import com.muammarahlnn.myshelf.backend.dto.response.toResponse
+import com.muammarahlnn.myshelf.backend.entity.Author
 import com.muammarahlnn.myshelf.backend.entity.Book
 import com.muammarahlnn.myshelf.backend.entity.Publisher
 import com.muammarahlnn.myshelf.backend.exception.NotFoundException
+import com.muammarahlnn.myshelf.backend.repository.AuthorRepository
 import com.muammarahlnn.myshelf.backend.repository.BookRepository
 import com.muammarahlnn.myshelf.backend.repository.PublisherRepository
 import com.muammarahlnn.myshelf.backend.service.BookService
@@ -22,6 +24,7 @@ import java.time.LocalDateTime
 class BookServiceImpl(
     private val bookRepository: BookRepository,
     private val publisherRepository: PublisherRepository,
+    private val authorRepository: AuthorRepository,
     private val validationUtil: ValidationUtil,
 ) : BookService {
 
@@ -32,15 +35,9 @@ class BookServiceImpl(
             title = request.title,
             desc = request.desc,
             createdAt = LocalDateTime.now(),
-        )
-
-        request.publisherId?.let { publisherId ->
-            val publisher = publisherRepository.findByIdOrNull(publisherId)
-                ?: throw NotFoundException("Publisher with id $publisherId not found")
-
-            book.apply {
-                this.publisher = publisher
-            }
+        ).apply {
+            addPublisher(request.publisherId)
+            addAuthors(request.authorIds)
         }
 
         return bookRepository.save(book).toResponse()
@@ -68,11 +65,8 @@ class BookServiceImpl(
         book.apply {
             title = request.title
             request.desc?.let { desc = it }
-            request.publisherId?.let { publisherId ->
-                publisherRepository.findByIdOrNull(publisherId)?.let { publisher ->
-                    this.publisher = publisher
-                }
-            }
+            addPublisher(request.publisherId)
+            addAuthors(request.authorIds)
             updatedAt = LocalDateTime.now()
         }
 
@@ -86,4 +80,24 @@ class BookServiceImpl(
 
     private fun findBookByIdOrThrowNotFound(bookId: String): Book =
         bookRepository.findByIdOrNull(bookId) ?: throw NotFoundException("Book with id $bookId not found")
+
+    private fun Book.addPublisher(publisherId: Long?): Book = apply {
+        publisherId?.let { publisherId ->
+            publisherRepository.findByIdOrNull(publisherId)?.let { publisher ->
+                this.publisher = publisher
+            } ?: throw NotFoundException("Publisher with id $publisherId not found")
+        }
+    }
+
+    private fun Book.addAuthors(authorIds: Set<Long>?): Book = apply {
+        authorIds?.let { authorIds ->
+            val authors = mutableSetOf<Author>()
+            authorIds.forEach { authorId ->
+                val author = authorRepository.findByIdOrNull(authorId)
+                    ?: throw NotFoundException("Author with id $authorId not found")
+                authors.add(author)
+            }
+            this.authors = authors
+        }
+    }
 }
