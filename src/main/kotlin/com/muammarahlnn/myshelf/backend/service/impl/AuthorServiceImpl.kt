@@ -4,7 +4,8 @@ import com.muammarahlnn.myshelf.backend.dto.request.CreateAuthorRequest
 import com.muammarahlnn.myshelf.backend.dto.request.PagingRequest
 import com.muammarahlnn.myshelf.backend.dto.request.UpdateAuthorRequest
 import com.muammarahlnn.myshelf.backend.dto.response.AuthorResponse
-import com.muammarahlnn.myshelf.backend.dto.response.BookResponse
+import com.muammarahlnn.myshelf.backend.dto.response.BookPreviewResponse
+import com.muammarahlnn.myshelf.backend.dto.response.toPreviewResponse
 import com.muammarahlnn.myshelf.backend.dto.response.toResponse
 import com.muammarahlnn.myshelf.backend.entity.Author
 import com.muammarahlnn.myshelf.backend.exception.NotFoundException
@@ -64,9 +65,9 @@ class AuthorServiceImpl(
         authorRepository.delete(author)
     }
 
-    override fun getAuthorBooks(authorId: Long): List<BookResponse> {
+    override fun getAuthorBooks(authorId: Long): List<BookPreviewResponse> {
         val author = findAuthorByIdOrThrowNotFound(authorId)
-        return author.books.map { it.toResponse() }
+        return author.books.map { it.toPreviewResponse() }
     }
 
     private fun findAuthorByIdOrThrowNotFound(authorId: Long): Author =

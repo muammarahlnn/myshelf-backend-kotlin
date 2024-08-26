@@ -2,7 +2,11 @@ package com.muammarahlnn.myshelf.backend.dto.response
 
 import com.muammarahlnn.myshelf.backend.entity.Book
 
-data class BookResponse(
+/**
+ * @Author Muammar Ahlan Abimanyu
+ * @File BookDetailsResponse.kt, 26/08/2024 23.06
+ */
+data class BookDetailsResponse(
     val id: String,
     val title: String,
     val desc: String? = null,
@@ -11,7 +15,7 @@ data class BookResponse(
     val publisher: PublisherResponse? = null,
 )
 
-fun Book.toResponse(): BookResponse = BookResponse(
+fun Book.toDetailsResponse(): BookDetailsResponse = BookDetailsResponse(
     id = id,
     title = title,
     desc = desc,

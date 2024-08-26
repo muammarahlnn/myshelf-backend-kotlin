@@ -3,8 +3,9 @@ package com.muammarahlnn.myshelf.backend.service.impl
 import com.muammarahlnn.myshelf.backend.dto.request.CreatePublisherRequest
 import com.muammarahlnn.myshelf.backend.dto.request.PagingRequest
 import com.muammarahlnn.myshelf.backend.dto.request.UpdatePublisherRequest
-import com.muammarahlnn.myshelf.backend.dto.response.BookResponse
+import com.muammarahlnn.myshelf.backend.dto.response.BookPreviewResponse
 import com.muammarahlnn.myshelf.backend.dto.response.PublisherResponse
+import com.muammarahlnn.myshelf.backend.dto.response.toPreviewResponse
 import com.muammarahlnn.myshelf.backend.dto.response.toResponse
 import com.muammarahlnn.myshelf.backend.entity.Publisher
 import com.muammarahlnn.myshelf.backend.exception.NotFoundException
@@ -64,9 +65,9 @@ class PublisherServiceImpl(
         publisherRepository.delete(publisher)
     }
 
-    override fun getPublisherBooks(publisherId: Long): List<BookResponse> {
+    override fun getPublisherBooks(publisherId: Long): List<BookPreviewResponse> {
         val publisher = findPublisherByIdOrThrowNotFound(publisherId)
-        return publisher.books.map { it.toResponse() }
+        return publisher.books.map { it.toPreviewResponse() }
     }
 
     private fun findPublisherByIdOrThrowNotFound(publisherId: Long): Publisher =

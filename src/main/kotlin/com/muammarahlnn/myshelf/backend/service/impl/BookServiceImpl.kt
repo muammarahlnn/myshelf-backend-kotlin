@@ -3,12 +3,13 @@ package com.muammarahlnn.myshelf.backend.service.impl
 import com.muammarahlnn.myshelf.backend.dto.request.CreateBookRequest
 import com.muammarahlnn.myshelf.backend.dto.request.PagingRequest
 import com.muammarahlnn.myshelf.backend.dto.request.UpdateBookRequest
-import com.muammarahlnn.myshelf.backend.dto.response.BookResponse
-import com.muammarahlnn.myshelf.backend.dto.response.toResponse
+import com.muammarahlnn.myshelf.backend.dto.response.BookDetailsResponse
+import com.muammarahlnn.myshelf.backend.dto.response.BookPreviewResponse
+import com.muammarahlnn.myshelf.backend.dto.response.toDetailsResponse
+import com.muammarahlnn.myshelf.backend.dto.response.toPreviewResponse
 import com.muammarahlnn.myshelf.backend.entity.Author
 import com.muammarahlnn.myshelf.backend.entity.Book
 import com.muammarahlnn.myshelf.backend.entity.Category
-import com.muammarahlnn.myshelf.backend.entity.Publisher
 import com.muammarahlnn.myshelf.backend.exception.NotFoundException
 import com.muammarahlnn.myshelf.backend.repository.AuthorRepository
 import com.muammarahlnn.myshelf.backend.repository.BookRepository
@@ -31,7 +32,7 @@ class BookServiceImpl(
     private val validationUtil: ValidationUtil,
 ) : BookService {
 
-    override fun createBook(request: CreateBookRequest): BookResponse {
+    override fun createBook(request: CreateBookRequest): BookDetailsResponse {
         validationUtil.validate(request)
 
         val book = Book(
@@ -44,10 +45,10 @@ class BookServiceImpl(
             addPublisher(request.publisherId)
         }
 
-        return bookRepository.save(book).toResponse()
+        return bookRepository.save(book).toDetailsResponse()
     }
 
-    override fun getBooks(request: PagingRequest): List<BookResponse> {
+    override fun getBooks(request: PagingRequest): List<BookPreviewResponse> {
         validationUtil.validate(request)
 
         return bookRepository.findAll(
@@ -56,13 +57,13 @@ class BookServiceImpl(
                 request.size,
                 Sort.by(Sort.Direction.DESC, Book::createdAt.name)
             ),
-        ).content.map { it.toResponse() }
+        ).content.map { it.toPreviewResponse() }
     }
 
-    override fun getBook(bookId: String): BookResponse =
-        findBookByIdOrThrowNotFound(bookId).toResponse()
+    override fun getBookDetails(bookId: String): BookDetailsResponse =
+        findBookByIdOrThrowNotFound(bookId).toDetailsResponse()
 
-    override fun updateBook(bookId: String, request: UpdateBookRequest): BookResponse {
+    override fun updateBook(bookId: String, request: UpdateBookRequest): BookDetailsResponse {
         val book = findBookByIdOrThrowNotFound(bookId)
         validationUtil.validate(request)
 
@@ -75,7 +76,7 @@ class BookServiceImpl(
             updatedAt = LocalDateTime.now()
         }
 
-        return bookRepository.save(book).toResponse()
+        return bookRepository.save(book).toDetailsResponse()
     }
 
     override fun deleteBook(bookId: String) {
