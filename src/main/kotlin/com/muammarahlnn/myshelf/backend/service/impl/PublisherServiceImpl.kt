@@ -11,7 +11,6 @@ import com.muammarahlnn.myshelf.backend.entity.Publisher
 import com.muammarahlnn.myshelf.backend.exception.NotFoundException
 import com.muammarahlnn.myshelf.backend.repository.PublisherRepository
 import com.muammarahlnn.myshelf.backend.service.PublisherService
-import com.muammarahlnn.myshelf.backend.util.ValidationUtil
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
@@ -24,35 +23,27 @@ import org.springframework.stereotype.Service
 @Service
 class PublisherServiceImpl(
     private val publisherRepository: PublisherRepository,
-    private val validationUtil: ValidationUtil,
 ) : PublisherService {
 
     override fun createPublisher(request: CreatePublisherRequest): PublisherResponse {
-        validationUtil.validate(request)
-
         val publisher = Publisher(name = request.name)
         return publisherRepository.save(publisher).toResponse()
     }
 
-    override fun getPublishers(request: PagingRequest): List<PublisherResponse> {
-        validationUtil.validate(request)
-
-        return publisherRepository.findAll(
+    override fun getPublishers(request: PagingRequest): List<PublisherResponse> =
+        publisherRepository.findAll(
             PageRequest.of(
                 request.page,
                 request.size,
                 Sort.by(Sort.Direction.ASC, Publisher::name.name)
             ),
         ).content.map { it.toResponse() }
-    }
 
     override fun getPublisher(publisherId: Long): PublisherResponse =
         findPublisherByIdOrThrowNotFound(publisherId).toResponse()
 
     override fun updatePublisher(publisherId: Long, request: UpdatePublisherRequest): PublisherResponse {
         val publisher = findPublisherByIdOrThrowNotFound(publisherId)
-        validationUtil.validate(request)
-
         publisher.apply {
             name = request.name
         }

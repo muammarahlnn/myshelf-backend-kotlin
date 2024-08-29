@@ -8,6 +8,7 @@ import com.muammarahlnn.myshelf.backend.dto.response.AuthorResponse
 import com.muammarahlnn.myshelf.backend.dto.response.BookPreviewResponse
 import com.muammarahlnn.myshelf.backend.dto.response.base.WebResponse
 import com.muammarahlnn.myshelf.backend.service.AuthorService
+import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -24,7 +25,7 @@ class AuthorController(
         authorService.getAuthors(pagingRequest)
 
     @PostMapping
-    fun createAuthor(@RequestBody requestBody: CreateAuthorRequest): WebResponse<AuthorResponse> =
+    fun createAuthor(@RequestBody @Valid requestBody: CreateAuthorRequest): WebResponse<AuthorResponse> =
         WebResponse.success(authorService.createAuthor(requestBody))
 
     @GetMapping("{authorId}")
@@ -34,7 +35,7 @@ class AuthorController(
     @PutMapping("{authorId}")
     fun updateAuthor(
         @PathVariable authorId: Long,
-        @RequestBody requestBody: UpdateAuthorRequest,
+        @RequestBody @Valid requestBody: UpdateAuthorRequest,
     ): WebResponse<AuthorResponse> = WebResponse.success(
         authorService.updateAuthor(
             authorId = authorId,

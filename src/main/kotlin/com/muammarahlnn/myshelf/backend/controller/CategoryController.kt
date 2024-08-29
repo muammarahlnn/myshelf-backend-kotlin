@@ -8,6 +8,7 @@ import com.muammarahlnn.myshelf.backend.dto.response.BookPreviewResponse
 import com.muammarahlnn.myshelf.backend.dto.response.CategoryResponse
 import com.muammarahlnn.myshelf.backend.dto.response.base.WebResponse
 import com.muammarahlnn.myshelf.backend.service.CategoryService
+import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -24,7 +25,7 @@ class CategoryController(
         categoryService.getCategories(pagingRequest)
 
     @PostMapping
-    fun createCategory(@RequestBody requestBody: CreateCategoryRequest): WebResponse<CategoryResponse> =
+    fun createCategory(@RequestBody @Valid requestBody: CreateCategoryRequest): WebResponse<CategoryResponse> =
         WebResponse.success(categoryService.createCategory(requestBody))
 
     @GetMapping("{categoryId}")
@@ -34,7 +35,7 @@ class CategoryController(
     @PutMapping("{categoryId}")
     fun updateCategory(
         @PathVariable categoryId: Long,
-        @RequestBody requestBody: UpdateCategoryRequest,
+        @RequestBody @Valid requestBody: UpdateCategoryRequest,
     ): WebResponse<CategoryResponse> = WebResponse.success(
         categoryService.updateCategory(
             categoryId = categoryId,

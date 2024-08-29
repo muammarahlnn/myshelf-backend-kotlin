@@ -11,7 +11,6 @@ import com.muammarahlnn.myshelf.backend.entity.Category
 import com.muammarahlnn.myshelf.backend.exception.NotFoundException
 import com.muammarahlnn.myshelf.backend.repository.CategoryRepository
 import com.muammarahlnn.myshelf.backend.service.CategoryService
-import com.muammarahlnn.myshelf.backend.util.ValidationUtil
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
@@ -24,36 +23,27 @@ import org.springframework.stereotype.Service
 @Service
 class CategoryServiceImpl(
     private val categoryRepository: CategoryRepository,
-    private val validationUtil: ValidationUtil,
 ) : CategoryService {
 
     override fun createCategory(request: CreateCategoryRequest): CategoryResponse {
-        validationUtil.validate(request)
-
         val category = Category(name = request.name)
         return categoryRepository.save(category).toResponse()
     }
 
-    override fun getCategories(request: PagingRequest): List<CategoryResponse> {
-        validationUtil.validate(request)
-
-        return categoryRepository.findAll(
+    override fun getCategories(request: PagingRequest): List<CategoryResponse> =
+        categoryRepository.findAll(
             PageRequest.of(
                 request.page,
                 request.size,
                 Sort.by(Sort.Direction.ASC, Category::name.name)
             ),
         ).content.map { it.toResponse() }
-    }
-
 
     override fun getCategory(categoryId: Long): CategoryResponse =
         findCategoryByIdOrThrowNotFound(categoryId).toResponse()
 
     override fun updateCategory(categoryId: Long, request: UpdateCategoryRequest): CategoryResponse {
         val category = findCategoryByIdOrThrowNotFound(categoryId)
-        validationUtil.validate(request)
-
         category.apply {
             name = request.name
         }

@@ -8,6 +8,7 @@ import com.muammarahlnn.myshelf.backend.dto.response.BookPreviewResponse
 import com.muammarahlnn.myshelf.backend.dto.response.PublisherResponse
 import com.muammarahlnn.myshelf.backend.dto.response.base.WebResponse
 import com.muammarahlnn.myshelf.backend.service.PublisherService
+import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
 
 /**
@@ -24,7 +25,7 @@ class PublisherController(
         publisherService.getPublishers(pagingRequest)
 
     @PostMapping
-    fun createPublisher(@RequestBody requestBody: CreatePublisherRequest): WebResponse<PublisherResponse> =
+    fun createPublisher(@RequestBody @Valid requestBody: CreatePublisherRequest): WebResponse<PublisherResponse> =
         WebResponse.success(publisherService.createPublisher(requestBody))
 
     @GetMapping("{publisherId}")
@@ -34,7 +35,7 @@ class PublisherController(
     @PutMapping("{publisherId}")
     fun updatePublisher(
         @PathVariable publisherId: Long,
-        @RequestBody requestBody: UpdatePublisherRequest,
+        @RequestBody @Valid requestBody: UpdatePublisherRequest,
     ): WebResponse<PublisherResponse> = WebResponse.success(
         publisherService.updatePublisher(
             publisherId = publisherId,

@@ -16,7 +16,6 @@ import com.muammarahlnn.myshelf.backend.repository.BookRepository
 import com.muammarahlnn.myshelf.backend.repository.CategoryRepository
 import com.muammarahlnn.myshelf.backend.repository.PublisherRepository
 import com.muammarahlnn.myshelf.backend.service.BookService
-import com.muammarahlnn.myshelf.backend.util.ValidationUtil
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
@@ -29,12 +28,9 @@ class BookServiceImpl(
     private val publisherRepository: PublisherRepository,
     private val authorRepository: AuthorRepository,
     private val categoryRepository: CategoryRepository,
-    private val validationUtil: ValidationUtil,
 ) : BookService {
 
     override fun createBook(request: CreateBookRequest): BookDetailsResponse {
-        validationUtil.validate(request)
-
         val book = Book(
             title = request.title,
             desc = request.desc,
@@ -48,25 +44,20 @@ class BookServiceImpl(
         return bookRepository.save(book).toDetailsResponse()
     }
 
-    override fun getBooks(request: PagingRequest): List<BookPreviewResponse> {
-        validationUtil.validate(request)
-
-        return bookRepository.findAll(
+    override fun getBooks(request: PagingRequest): List<BookPreviewResponse> =
+        bookRepository.findAll(
             PageRequest.of(
                 request.page,
                 request.size,
                 Sort.by(Sort.Direction.DESC, Book::createdAt.name)
             ),
         ).content.map { it.toPreviewResponse() }
-    }
 
     override fun getBookDetails(bookId: String): BookDetailsResponse =
         findBookByIdOrThrowNotFound(bookId).toDetailsResponse()
 
     override fun updateBook(bookId: String, request: UpdateBookRequest): BookDetailsResponse {
         val book = findBookByIdOrThrowNotFound(bookId)
-        validationUtil.validate(request)
-
         book.apply {
             title = request.title
             request.desc?.let { desc = it }

@@ -8,6 +8,7 @@ import com.muammarahlnn.myshelf.backend.dto.response.BookDetailsResponse
 import com.muammarahlnn.myshelf.backend.dto.response.BookPreviewResponse
 import com.muammarahlnn.myshelf.backend.dto.response.base.WebResponse
 import com.muammarahlnn.myshelf.backend.service.BookService
+import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -20,7 +21,7 @@ class BookController(
         bookService.getBooks(pagingRequest)
 
     @PostMapping
-    fun createBook(@RequestBody requestBody: CreateBookRequest): WebResponse<BookDetailsResponse> =
+    fun createBook(@RequestBody @Valid requestBody: CreateBookRequest): WebResponse<BookDetailsResponse> =
         WebResponse.success(bookService.createBook(requestBody))
 
     @GetMapping("{bookId}")
@@ -30,7 +31,7 @@ class BookController(
     @PutMapping("{bookId}")
     fun updateBook(
         @PathVariable bookId: String,
-        @RequestBody requestBody: UpdateBookRequest,
+        @RequestBody @Valid requestBody: UpdateBookRequest,
     ): WebResponse<BookDetailsResponse> = WebResponse.success(
         bookService.updateBook(
             bookId = bookId,
