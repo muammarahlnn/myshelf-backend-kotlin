@@ -21,14 +21,14 @@ data class User(
 
     @get:JvmName(name = "_getUsername")
     @Column(nullable = false)
-    var username: String?,
+    var username: String,
 
     @Column(name = "full_name", nullable = false)
-    var fullName: String?,
+    var fullName: String,
 
     @get:JvmName(name = "_getPassword")
     @Column(nullable = false)
-    var password: String?,
+    var password: String,
 
     @CreationTimestamp
     @Column(name = "created_at", nullable = false, updatable = false)
@@ -41,7 +41,7 @@ data class User(
 
     override fun getAuthorities(): MutableCollection<out GrantedAuthority> = mutableListOf()
 
-    override fun getPassword(): String? = password
+    override fun getPassword(): String = password
 
-    override fun getUsername(): String? = username
+    override fun getUsername(): String = username
 }

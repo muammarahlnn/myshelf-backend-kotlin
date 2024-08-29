@@ -3,6 +3,7 @@ package com.muammarahlnn.myshelf.backend.service.impl
 import com.muammarahlnn.myshelf.backend.dto.request.LoginUserRequest
 import com.muammarahlnn.myshelf.backend.dto.request.RegisterUserRequest
 import com.muammarahlnn.myshelf.backend.dto.response.AuthenticationResponse
+import com.muammarahlnn.myshelf.backend.dto.response.UserCredentialResponse
 import com.muammarahlnn.myshelf.backend.entity.User
 import com.muammarahlnn.myshelf.backend.exception.NotFoundException
 import com.muammarahlnn.myshelf.backend.repository.UserRepository
