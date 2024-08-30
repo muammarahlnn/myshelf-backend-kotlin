@@ -24,6 +24,10 @@ data class Book(
     )
     var desc: String? = null,
 
+    @Lob
+    @Column(name = "image", nullable = true)
+    var image: List<Byte>? = null,
+
     @Column(name = "created_at", nullable = false)
     val createdAt: LocalDateTime,
 

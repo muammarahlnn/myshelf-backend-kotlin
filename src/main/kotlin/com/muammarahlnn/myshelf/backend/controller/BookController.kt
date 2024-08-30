@@ -10,6 +10,7 @@ import com.muammarahlnn.myshelf.backend.dto.response.base.WebResponse
 import com.muammarahlnn.myshelf.backend.service.BookService
 import jakarta.validation.Valid
 import org.springframework.web.bind.annotation.*
+import org.springframework.web.multipart.MultipartFile
 
 @RestController
 @RequestMapping("books")
@@ -36,6 +37,17 @@ class BookController(
         bookService.updateBook(
             bookId = bookId,
             request = requestBody,
+        )
+    )
+
+    @PatchMapping("{bookId}")
+    fun updateBookImage(
+        @PathVariable bookId: String,
+        @RequestPart image: MultipartFile,
+    ): WebResponse<BookDetailsResponse> = WebResponse.success(
+        bookService.updateBookImage(
+            bookId = bookId,
+            image = image,
         )
     )
 

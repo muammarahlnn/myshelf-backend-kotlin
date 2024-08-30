@@ -20,6 +20,7 @@ import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
 import org.springframework.stereotype.Service
+import org.springframework.web.multipart.MultipartFile
 import java.time.LocalDateTime
 
 @Service
@@ -73,6 +74,15 @@ class BookServiceImpl(
     override fun deleteBook(bookId: String) {
         val book = findBookByIdOrThrowNotFound(bookId)
         bookRepository.delete(book)
+    }
+
+    override fun updateBookImage(bookId: String, image: MultipartFile): BookDetailsResponse {
+        val book = findBookByIdOrThrowNotFound(bookId)
+        book.apply {
+            this.image = image.bytes.toList()
+        }
+
+        return bookRepository.save(book).toDetailsResponse()
     }
 
     private fun findBookByIdOrThrowNotFound(bookId: String): Book =
