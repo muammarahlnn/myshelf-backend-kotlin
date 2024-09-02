@@ -11,8 +11,8 @@ data class WebResponse<T>(
     companion object {
 
         fun <T> success(data: T): WebResponse<T> = WebResponse(
-            code = HttpStatus.ACCEPTED.value(),
-            status = HttpStatus.ACCEPTED.reasonPhrase,
+            code = HttpStatus.OK.value(),
+            status = HttpStatus.OK.reasonPhrase,
             data = data,
         )
 

@@ -16,7 +16,15 @@ data class Publisher(
 
     @Column(name = "name", nullable = false)
     var name: String,
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    var user: User? = null,
 ) {
-    @OneToMany(mappedBy = "publisher")
+    @OneToMany(
+        mappedBy = "publisher",
+        cascade = [CascadeType.ALL],
+        orphanRemoval = true,
+    )
     val books: Set<Book> = mutableSetOf()
 }

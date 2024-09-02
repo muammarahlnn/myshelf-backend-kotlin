@@ -16,6 +16,10 @@ data class Category(
 
     @Column(name = "name", nullable = false)
     var name: String,
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    var user: User? = null,
 ) {
     @ManyToMany(mappedBy = "categories")
     val books: Set<Book> = mutableSetOf()

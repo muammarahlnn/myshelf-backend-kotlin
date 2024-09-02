@@ -37,6 +37,10 @@ data class Book(
     @ManyToOne
     @JoinColumn(name = "publisher_id", nullable = true)
     var publisher: Publisher? = null,
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    var user: User? = null,
 ) {
     @ManyToMany
     @JoinTable(
@@ -50,7 +54,7 @@ data class Book(
     @JoinTable(
         name = "book_category",
         joinColumns = [JoinColumn(name = "book_id")],
-        inverseJoinColumns = [JoinColumn(name = "category_id")]
+        inverseJoinColumns = [JoinColumn(name = "category_id")],
     )
     var categories: Set<Category> = mutableSetOf()
 }

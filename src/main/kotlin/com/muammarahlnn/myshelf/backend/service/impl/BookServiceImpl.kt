@@ -16,6 +16,7 @@ import com.muammarahlnn.myshelf.backend.repository.BookRepository
 import com.muammarahlnn.myshelf.backend.repository.CategoryRepository
 import com.muammarahlnn.myshelf.backend.repository.PublisherRepository
 import com.muammarahlnn.myshelf.backend.service.BookService
+import com.muammarahlnn.myshelf.backend.service.UserService
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
@@ -29,6 +30,7 @@ class BookServiceImpl(
     private val publisherRepository: PublisherRepository,
     private val authorRepository: AuthorRepository,
     private val categoryRepository: CategoryRepository,
+    private val userService: UserService,
 ) : BookService {
 
     override fun createBook(request: CreateBookRequest): BookDetailsResponse {
@@ -36,6 +38,7 @@ class BookServiceImpl(
             title = request.title,
             desc = request.desc,
             createdAt = LocalDateTime.now(),
+            user = userService.getCurrentUser(),
         ).apply {
             addAuthors(request.authorIds)
             addCategories(request.categoryIds)
@@ -45,14 +48,17 @@ class BookServiceImpl(
         return bookRepository.save(book).toDetailsResponse()
     }
 
-    override fun getBooks(request: PagingRequest): List<BookPreviewResponse> =
-        bookRepository.findAll(
-            PageRequest.of(
+    override fun getBooks(request: PagingRequest): List<BookPreviewResponse> {
+        val userId = userService.getCurrentUser().id ?: return emptyList()
+        return bookRepository.findByUserId(
+            userId = userId,
+            pageable = PageRequest.of(
                 request.page,
                 request.size,
                 Sort.by(Sort.Direction.DESC, Book::createdAt.name)
-            ),
+            )
         ).content.map { it.toPreviewResponse() }
+    }
 
     override fun getBookDetails(bookId: String): BookDetailsResponse =
         findBookByIdOrThrowNotFound(bookId).toDetailsResponse()

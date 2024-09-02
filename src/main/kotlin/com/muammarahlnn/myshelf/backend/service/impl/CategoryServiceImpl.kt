@@ -11,6 +11,7 @@ import com.muammarahlnn.myshelf.backend.entity.Category
 import com.muammarahlnn.myshelf.backend.exception.NotFoundException
 import com.muammarahlnn.myshelf.backend.repository.CategoryRepository
 import com.muammarahlnn.myshelf.backend.service.CategoryService
+import com.muammarahlnn.myshelf.backend.service.UserService
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
@@ -23,21 +24,29 @@ import org.springframework.stereotype.Service
 @Service
 class CategoryServiceImpl(
     private val categoryRepository: CategoryRepository,
+    private val userService: UserService,
 ) : CategoryService {
 
     override fun createCategory(request: CreateCategoryRequest): CategoryResponse {
-        val category = Category(name = request.name)
+        val category = Category(
+            name = request.name,
+            user = userService.getCurrentUser(),
+        )
         return categoryRepository.save(category).toResponse()
     }
 
-    override fun getCategories(request: PagingRequest): List<CategoryResponse> =
-        categoryRepository.findAll(
-            PageRequest.of(
+    override fun getCategories(request: PagingRequest): List<CategoryResponse> {
+        val userId = userService.getCurrentUser().id ?: return emptyList()
+        return categoryRepository.findByUserId(
+            userId = userId,
+            pageable = PageRequest.of(
                 request.page,
                 request.size,
                 Sort.by(Sort.Direction.ASC, Category::name.name)
             ),
         ).content.map { it.toResponse() }
+    }
+
 
     override fun getCategory(categoryId: Long): CategoryResponse =
         findCategoryByIdOrThrowNotFound(categoryId).toResponse()

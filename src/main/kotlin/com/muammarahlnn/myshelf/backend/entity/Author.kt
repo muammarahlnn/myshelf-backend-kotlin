@@ -16,7 +16,14 @@ data class Author(
 
     @Column(name = "name", nullable = false)
     var name: String,
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    var user: User? = null,
 ) {
-    @ManyToMany(mappedBy = "authors")
+    @ManyToMany(
+        mappedBy = "authors",
+        cascade = [CascadeType.ALL],
+    )
     val books: Set<Book> = mutableSetOf()
 }

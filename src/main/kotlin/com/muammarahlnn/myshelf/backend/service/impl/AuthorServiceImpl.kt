@@ -11,6 +11,7 @@ import com.muammarahlnn.myshelf.backend.entity.Author
 import com.muammarahlnn.myshelf.backend.exception.NotFoundException
 import com.muammarahlnn.myshelf.backend.repository.AuthorRepository
 import com.muammarahlnn.myshelf.backend.service.AuthorService
+import com.muammarahlnn.myshelf.backend.service.UserService
 import org.springframework.data.domain.PageRequest
 import org.springframework.data.domain.Sort
 import org.springframework.data.repository.findByIdOrNull
@@ -23,21 +24,29 @@ import org.springframework.stereotype.Service
 @Service
 class AuthorServiceImpl(
     private val authorRepository: AuthorRepository,
+    private val userService: UserService,
 ) : AuthorService {
 
     override fun createAuthor(request: CreateAuthorRequest): AuthorResponse {
-        val author = Author(name = request.name)
+        val author = Author(
+            name = request.name,
+            user = userService.getCurrentUser(),
+        )
         return authorRepository.save(author).toResponse()
     }
 
-    override fun getAuthors(request: PagingRequest): List<AuthorResponse> =
-        authorRepository.findAll(
-            PageRequest.of(
+    override fun getAuthors(request: PagingRequest): List<AuthorResponse> {
+        val userId = userService.getCurrentUser().id ?: return emptyList()
+        return authorRepository.findByUserId(
+            userId = userId,
+            pageable = PageRequest.of(
                 request.page,
                 request.size,
                 Sort.by(Sort.Direction.ASC, Author::name.name)
             ),
         ).content.map { it.toResponse() }
+    }
+
 
     override fun getAuthor(authorId: Long): AuthorResponse =
         findAuthorByIdOrThrowNotFound(authorId).toResponse()
