@@ -7,8 +7,8 @@ import com.muammarahlnn.myshelf.backend.entity.User
  * @File UserCredentialResponse.kt, 29/08/2024 19.52
  */
 data class UserCredentialResponse(
-    val username: String,
-    val fullName: String,
+    val username: String?,
+    val fullName: String?,
 )
 
 fun User.toCredentialResponse(): UserCredentialResponse = UserCredentialResponse(

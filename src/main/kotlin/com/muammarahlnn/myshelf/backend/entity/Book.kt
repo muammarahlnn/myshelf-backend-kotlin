@@ -15,7 +15,7 @@ data class Book(
     val id: String = UUID.randomUUID().toString(),
 
     @Column(name = "title", nullable = false)
-    var title: String,
+    var title: String?,
 
     @Column(
         name = "description",

@@ -8,7 +8,7 @@ import com.muammarahlnn.myshelf.backend.entity.Book
  */
 data class BookDetailsResponse(
     val id: String,
-    val title: String,
+    val title: String?,
     val desc: String? = null,
     val image: List<Byte>? = null,
     val authors: List<AuthorResponse> = emptyList(),

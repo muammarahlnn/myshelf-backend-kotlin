@@ -10,5 +10,5 @@ import jakarta.validation.constraints.NotNull
 data class CreatePublisherRequest(
     @field:NotNull
     @field:NotBlank
-    val name: String,
+    val name: String?,
 )

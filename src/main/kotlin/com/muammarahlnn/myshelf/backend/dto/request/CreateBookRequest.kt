@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotNull
 data class CreateBookRequest(
     @field:NotNull @field:NotBlank val title: String,
     val desc: String? = null,
-    @field:NotEmpty val authorIds: List<Long> = emptyList(),
-    @field:NotEmpty val categoryIds: List<Long> = emptyList(),
-    @field:Min(1) val publisherId: Long? = null,
+    @field:NotNull @field:NotEmpty val authorIds: List<Long>?,
+    @field:NotNull @field:NotEmpty val categoryIds: List<Long>?,
+    @field:NotNull @field:Min(1) val publisherId: Long?,
 )

@@ -9,7 +9,7 @@ import com.muammarahlnn.myshelf.backend.exception.InternalServerException
  */
 data class AuthorResponse(
     val id: Long,
-    val name: String,
+    val name: String?,
 )
 
 fun Author.toResponse(): AuthorResponse = AuthorResponse(

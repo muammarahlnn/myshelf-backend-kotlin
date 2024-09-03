@@ -8,8 +8,8 @@ import jakarta.validation.constraints.Min
  */
 data class PagingRequest(
     @field:Min(0)
-    val page: Int,
+    val page: Int?,
 
     @field:Min(1)
-    val size: Int,
+    val size: Int?,
 )

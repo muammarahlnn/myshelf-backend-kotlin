@@ -9,7 +9,7 @@ import com.muammarahlnn.myshelf.backend.exception.InternalServerException
  */
 data class CategoryResponse(
     val id: Long,
-    val name: String,
+    val name: String?,
 )
 
 fun Category.toResponse(): CategoryResponse = CategoryResponse(

@@ -1,5 +1,6 @@
 package com.muammarahlnn.myshelf.backend.service.impl
 
+import com.muammarahlnn.myshelf.backend.controller.provider.PagingProvider
 import com.muammarahlnn.myshelf.backend.dto.request.CreateBookRequest
 import com.muammarahlnn.myshelf.backend.dto.request.PagingRequest
 import com.muammarahlnn.myshelf.backend.dto.request.UpdateBookRequest
@@ -53,8 +54,8 @@ class BookServiceImpl(
         return bookRepository.findByUserId(
             userId = userId,
             pageable = PageRequest.of(
-                request.page,
-                request.size,
+                request.page ?: PagingProvider.DEFAULT_PAGE,
+                request.size ?: PagingProvider.DEFAULT_SIZE,
                 Sort.by(Sort.Direction.DESC, Book::createdAt.name)
             )
         ).content.map { it.toPreviewResponse() }
@@ -102,23 +103,27 @@ class BookServiceImpl(
         }
     }
 
-    private fun Book.addAuthors(authorIds: List<Long>): Book = apply {
-        val authors = mutableSetOf<Author>()
-        authorIds.forEach { authorId ->
-            val author = authorRepository.findByIdOrNull(authorId)
-                ?: throw NotFoundException("Author with id $authorId not found")
-            authors.add(author)
+    private fun Book.addAuthors(authorIds: List<Long>?): Book = apply {
+        authorIds?.let { authorIds ->
+            val authors = mutableSetOf<Author>()
+            authorIds.forEach { authorId ->
+                val author = authorRepository.findByIdOrNull(authorId)
+                    ?: throw NotFoundException("Author with id $authorId not found")
+                authors.add(author)
+            }
+            this.authors = authors
         }
-        this.authors = authors
     }
 
-    private fun Book.addCategories(categoryIds: List<Long>): Book = apply {
-        val categories = mutableSetOf<Category>()
-        categoryIds.forEach { categoryId ->
-            val category = categoryRepository.findByIdOrNull(categoryId)
-                ?: throw NotFoundException("Category with id $categoryId not found")
-            categories.add(category)
+    private fun Book.addCategories(categoryIds: List<Long>?): Book = apply {
+        categoryIds?.let { categoryIds ->
+            val categories = mutableSetOf<Category>()
+            categoryIds.forEach { categoryId ->
+                val category = categoryRepository.findByIdOrNull(categoryId)
+                    ?: throw NotFoundException("Category with id $categoryId not found")
+                categories.add(category)
+            }
+            this.categories = categories
         }
-        this.categories = categories
     }
 }

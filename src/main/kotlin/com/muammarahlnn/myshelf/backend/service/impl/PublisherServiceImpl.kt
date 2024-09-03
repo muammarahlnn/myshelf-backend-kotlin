@@ -1,5 +1,6 @@
 package com.muammarahlnn.myshelf.backend.service.impl
 
+import com.muammarahlnn.myshelf.backend.controller.provider.PagingProvider
 import com.muammarahlnn.myshelf.backend.dto.request.CreatePublisherRequest
 import com.muammarahlnn.myshelf.backend.dto.request.PagingRequest
 import com.muammarahlnn.myshelf.backend.dto.request.UpdatePublisherRequest
@@ -40,8 +41,8 @@ class PublisherServiceImpl(
         return publisherRepository.findByUserId(
             userId = userId,
             pageable = PageRequest.of(
-                request.page,
-                request.size,
+                request.page ?: PagingProvider.DEFAULT_PAGE,
+                request.size ?: PagingProvider.DEFAULT_SIZE,
                 Sort.by(Sort.Direction.ASC, Publisher::name.name)
             ),
         ).content.map { it.toResponse() }

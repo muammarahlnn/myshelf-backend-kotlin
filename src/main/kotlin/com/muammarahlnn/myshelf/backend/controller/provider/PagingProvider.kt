@@ -17,8 +17,8 @@ abstract class PagingProvider <T> {
 
     @GetMapping
     final fun getList(
-        @RequestParam(value = "page", defaultValue = "0") page: Int,
-        @RequestParam(value = "size", defaultValue = "10") size: Int,
+        @RequestParam(value = "page", defaultValue = "$DEFAULT_PAGE") page: Int,
+        @RequestParam(value = "size", defaultValue = "$DEFAULT_SIZE") size: Int,
     ): WebResponse<List<T>> = WebResponse.success(
         getPagedData(
             PagingRequest(
@@ -27,4 +27,11 @@ abstract class PagingProvider <T> {
             )
         )
     )
+
+    companion object {
+
+        const val DEFAULT_PAGE = 0
+
+        const val DEFAULT_SIZE = 10
+    }
 }

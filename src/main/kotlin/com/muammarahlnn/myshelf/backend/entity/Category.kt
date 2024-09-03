@@ -15,7 +15,7 @@ data class Category(
     val id: Long? = null,
 
     @Column(name = "name", nullable = false)
-    var name: String,
+    var name: String?,
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)

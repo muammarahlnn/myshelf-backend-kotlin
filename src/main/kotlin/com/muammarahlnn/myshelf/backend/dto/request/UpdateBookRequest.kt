@@ -8,7 +8,7 @@ import jakarta.validation.constraints.NotBlank
  * @File UpdateBookRequest.kt, 25/08/2024 16.57
  */
 data class UpdateBookRequest(
-    @field:NotBlank val title: String,
+    @field:NotBlank val title: String? = null,
     val desc: String? = null,
     val authorIds: List<Long> = emptyList(),
     val categoryIds: List<Long> = emptyList(),

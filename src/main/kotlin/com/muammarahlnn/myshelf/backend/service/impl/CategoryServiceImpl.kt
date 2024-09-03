@@ -1,5 +1,6 @@
 package com.muammarahlnn.myshelf.backend.service.impl
 
+import com.muammarahlnn.myshelf.backend.controller.provider.PagingProvider
 import com.muammarahlnn.myshelf.backend.dto.request.CreateCategoryRequest
 import com.muammarahlnn.myshelf.backend.dto.request.PagingRequest
 import com.muammarahlnn.myshelf.backend.dto.request.UpdateCategoryRequest
@@ -40,8 +41,8 @@ class CategoryServiceImpl(
         return categoryRepository.findByUserId(
             userId = userId,
             pageable = PageRequest.of(
-                request.page,
-                request.size,
+                request.page ?: PagingProvider.DEFAULT_PAGE,
+                request.size ?: PagingProvider.DEFAULT_SIZE,
                 Sort.by(Sort.Direction.ASC, Category::name.name)
             ),
         ).content.map { it.toResponse() }

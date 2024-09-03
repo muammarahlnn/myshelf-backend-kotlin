@@ -4,7 +4,7 @@ import com.muammarahlnn.myshelf.backend.entity.Book
 
 data class BookPreviewResponse(
     val id: String,
-    val title: String,
+    val title: String?,
     val authors: List<AuthorResponse> = emptyList(),
 )
 

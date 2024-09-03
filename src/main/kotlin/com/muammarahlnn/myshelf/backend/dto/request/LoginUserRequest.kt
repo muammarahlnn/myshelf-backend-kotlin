@@ -1,6 +1,7 @@
 package com.muammarahlnn.myshelf.backend.dto.request
 
 import jakarta.validation.constraints.NotEmpty
+import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
 
 /**
@@ -8,11 +9,13 @@ import jakarta.validation.constraints.Size
  * @File LoginRequest.kt, 28/08/2024 23.12
  */
 data class LoginUserRequest(
+    @field:NotNull
     @field:NotEmpty(message = "Username is required")
     @field:Size(min = 2, max = 100, message = "Username length must be between 2 and 100 characters")
-    val username: String,
+    val username: String?,
 
+    @field:NotNull
     @field:NotEmpty(message = "Password is required")
     @field:Size(min = 6, max = 100, message = "Password length must be between 6 and 100 characters")
-    val password: String,
+    val password: String?,
 )
